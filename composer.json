@@ -1,0 +1,27 @@
+{
+    "authors": [
+        {
+            "name": "seven communications GmbH & Co. KG",
+            "email": "support@seven.io"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Modules\\Seven\\": "app/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Seven\\Tests\\": "tests/"
+        }
+    },
+    "description": "",
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {}
+        }
+    },
+    "name": "seven.io/invoiceninja",
+    "type": "invoiceninja-module"
+}
