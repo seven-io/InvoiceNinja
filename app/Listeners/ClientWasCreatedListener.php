@@ -21,7 +21,8 @@ class ClientWasCreatedListener
 
         $cfg = config('seven');
         //logger('seven config', $cfg);
-        list('text' => $text, 'enabled' => $enabled) = $cfg['events']['clientCreated'];
+        list('text' => $text, 'enabled' => $enabled, 'sms' => $smsConfig) = $cfg['events']['clientCreated'];
+        list('from' => $from) = $smsConfig;
 
         $apiKey = $cfg['apiKey'];
         if (empty($apiKey)) {
@@ -50,7 +51,7 @@ class ClientWasCreatedListener
             return;
         }
 
-        $params = compact('text', 'to');
+        $params = compact('from', 'text', 'to');
         logger('smsParams', $params);
 
         try {

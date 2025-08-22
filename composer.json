@@ -15,7 +15,7 @@
             "Modules\\Seven\\Tests\\": "tests/"
         }
     },
-    "description": "",
+    "description": "InvoiceNinja module for communicating via seven.io",
     "extra": {
         "laravel": {
             "providers": [],

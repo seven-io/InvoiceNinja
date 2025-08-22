@@ -5,7 +5,6 @@ namespace Modules\Seven\Providers;
 use App\Events\Client\ClientWasCreated;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
-use Modules\Seven\Listeners\AccountCreatedListener;
 use Modules\Seven\Listeners\ClientWasCreatedListener;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -26,7 +25,6 @@ class SevenServiceProvider extends ServiceProvider
         $this->registerViews();
         $this->loadMigrationsFrom(module_path($this->name, 'database/migrations'));
 
-        Event::listen(AccountCreated::class, AccountCreatedListener::class);
         Event::listen(ClientWasCreated::class, ClientWasCreatedListener::class);
     }
 

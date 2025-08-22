@@ -7,10 +7,6 @@ return [
         'from' => 'InvoiceNinja'
     ],
     'events' => [
-        'accountCreated' => [
-            'enabled' => false,
-            'text' => 'Account Created',
-        ],
         'clientCreated' => [
             'enabled' => false,
             'text' => 'Client Created',
