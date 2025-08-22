@@ -13,18 +13,21 @@ class ClientWasCreatedListener
      */
     public function handle(ClientWasCreated $event): void
     {
+        $to = $event->client->phone;
+        if (empty($to)) {
+            logger('stop sending message: to is empty');
+            return;
+        }
+
         $client = $event->client;
         $clientArr = $client->toArray();
         unset($clientArr['settings']);
         logger('client was created', $clientArr);
 
-
-        $cfg = config('seven');
-        //logger('seven config', $cfg);
-        list('text' => $text, 'enabled' => $enabled, 'sms' => $smsConfig) = $cfg['events']['clientCreated'];
+        list('apiKey' => $apiKey, 'events' => $events, 'sms' => $smsConfig) = config('seven');
+        list('text' => $text, 'enabled' => $enabled) = $events['clientCreated'];
         list('from' => $from) = $smsConfig;
 
-        $apiKey = $cfg['apiKey'];
         if (empty($apiKey)) {
             logger('stop sending message: apiKey is empty');
             return;
@@ -43,12 +46,6 @@ class ClientWasCreatedListener
         foreach(array_keys($clientArr) as $key ){
             $value = $client->getAttribute($key);
             $text = str_replace('{{'.$key.'}}', $value, $text);
-        }
-
-        $to = $event->client->phone;
-        if (empty($to)) {
-            logger('stop sending message: to is empty');
-            return;
         }
 
         $params = compact('from', 'text', 'to');

@@ -1,39 +1,11 @@
 {
-    "active": 1,
     "alias": "seven",
-    "aliases": {},
     "description": "",
-    "extra-modules": {},
     "files": [],
-    "icon": "sms",
     "keywords": [],
     "name": "Seven",
-    "no-sidebar": 0,
-    "order": 11,
-    "plural": "seven",
-    "priority": 1,
+    "priority": 0,
     "providers": [
         "Modules\\Seven\\Providers\\SevenServiceProvider"
-    ],
-    "requires": [],
-    "settings": [
-        {
-            "attributes": {
-                "required": "required"
-            },
-            "icon": "fa fa-font",
-            "name": "api_key",
-            "rules": "required|string",
-            "title": "seven::general.api_key",
-            "type": "password"
-        },
-        {
-            "attributes": {},
-            "icon": "fa fa-font",
-            "name": "sms_from",
-            "rules": "nullable|string",
-            "title": "seven::general.on_invoice_creation_text",
-            "type": "text"
-        }
     ]
 }

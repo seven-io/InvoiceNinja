@@ -9,7 +9,7 @@ return [
     'events' => [
         'clientCreated' => [
             'enabled' => false,
-            'text' => 'Client Created',
+            'text' => 'Dear {{name}}, we are just trying to make sure that your phone number {{phone}} is correct.',
         ]
     ]
 ];

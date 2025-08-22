@@ -1,8 +1,10 @@
 {
     "authors": [
         {
+            "email": "support@seven.io",
+            "homepage": "https://www.seven.io",
             "name": "seven communications GmbH & Co. KG",
-            "email": "support@seven.io"
+            "role": "Developer"
         }
     ],
     "autoload": {
@@ -15,13 +17,26 @@
             "Modules\\Seven\\Tests\\": "tests/"
         }
     },
-    "description": "InvoiceNinja module for communicating via seven.io",
-    "extra": {
-        "laravel": {
-            "providers": [],
-            "aliases": {}
+    "config": {
+        "platform": {
+            "php": "8.2"
         }
     },
+    "description": "InvoiceNinja module for communicating via seven.io",
+    "keywords": [
+        "invoiceninja",
+        "sms"
+    ],
+    "license": "MIT",
     "name": "seven.io/invoiceninja",
+    "require": {
+        "php": ">=8.2"
+    },
+    "support": {
+        "docs": "https://github.com/seven-io/invoiceninja",
+        "email": "support@seven.io",
+        "rss": "https://www.seven.io/en/feed/",
+        "source": "https://github.com/seven-io/invoiceninja"
+    },
     "type": "invoiceninja-module"
 }
