@@ -81,10 +81,12 @@ Configure the module through InvoiceNinja's interface:
 - **sms.from**: The sender ID for SMS messages
 - **events.clientCreated.enabled**: Toggle SMS notifications on/off
 - **events.clientCreated.text**: Customizable SMS message with variable support
+- **events.vendorCreated.enabled**: Toggle SMS notifications on/off
+- **events.vendorCreated.text**: Customizable SMS message with variable support
 
 ## How It Works
 
-1. **Event Listening**: The module listens for InvoiceNinja's `ClientWasCreated` events
+1. **Event Listening**: The module listens for InvoiceNinja's events `ClientWasCreated` and `VendorWasCreated`
 2. **Message Processing**: When triggered, it processes the SMS template with client data
 3. **API Communication**: Sends the SMS via seven.io's REST API
 4. **Error Handling**: Logs success/failure and handles API errors gracefully

@@ -6,8 +6,10 @@ use App\Events\Client\ClientWasCreated;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use Modules\Seven\Listeners\ClientWasCreatedListener;
+use Modules\Seven\Listeners\VendorWasCreatedListener;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
+use App\Events\Vendor\VendorWasCreated;
 
 class SevenServiceProvider extends ServiceProvider
 {
@@ -19,6 +21,7 @@ class SevenServiceProvider extends ServiceProvider
         $this->registerConfig();
 
         Event::listen(ClientWasCreated::class, ClientWasCreatedListener::class);
+        Event::listen(VendorWasCreated::class, VendorWasCreatedListener::class);
     }
 
     protected function registerConfig(): void
