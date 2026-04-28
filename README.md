@@ -1,134 +1,103 @@
-<img alt='' src="https://www.seven.io/wp-content/uploads/Logo.svg" width="250" />
+<p align="center">
+  <img src="https://www.seven.io/wp-content/uploads/Logo.svg" width="250" alt="seven logo" />
+</p>
 
-# seven.io SMS Module for InvoiceNinja
+<h1 align="center">seven SMS for InvoiceNinja</h1>
 
-Automatically send SMS notifications to clients using seven.io's messaging service when they are created in InvoiceNinja.
+<p align="center">
+  Send transactional SMS to clients and vendors of <a href="https://www.invoiceninja.com/">InvoiceNinja</a> via the seven gateway. Auto-fires on creation events.
+</p>
 
-## What It Does
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-teal.svg" alt="MIT License" /></a>
+  <img src="https://img.shields.io/badge/InvoiceNinja-5.x-blue" alt="InvoiceNinja 5.x" />
+  <img src="https://img.shields.io/badge/PHP-8.1%2B-purple" alt="PHP 8.1+" />
+  <img src="https://img.shields.io/badge/status-WIP-orange" alt="Work in Progress" />
+</p>
 
-This module integrates seven.io's SMS API with InvoiceNinja to:
+> **Heads up:** Core SMS dispatch is implemented; the settings UI is still being built out.
 
-- **Automatically send SMS notifications** when new clients are created
-- **Personalize messages** using client data (name, email, etc.)
-- **Configure SMS settings** through InvoiceNinja's module interface
-- **Handle API errors gracefully** with comprehensive logging
+---
 
 ## Features
 
-- **Automatic SMS sending** on client creation events
-- **Template-based messaging** with variable substitution
-- **Easy configuration** via module settings
-- **Robust error handling** and logging
-- **Modular architecture** that doesn't interfere with core InvoiceNinja
+- **Client Creation SMS** - Auto-fire on `ClientWasCreated`
+- **Vendor Creation SMS** - Auto-fire on `VendorWasCreated`
+- **Template Variables** - Reference any field on the client/vendor object via `{{field}}`
+- **Robust Error Handling** - Failures are logged without breaking InvoiceNinja core flows
+- **Modular** - Self-contained Laravel module, no patches to core
+
+## Prerequisites
+
+- An [InvoiceNinja](https://www.invoiceninja.com/) installation
+- PHP 8.1+ and Composer
+- Node.js + npm (for building frontend assets)
+- A [seven account](https://www.seven.io/) with API key ([How to get your API key](https://help.seven.io/en/developer/where-do-i-find-my-api-key))
 
 ## Installation
 
-### 1. Prerequisites
+### 1. Enable module autoloading
 
-- InvoiceNinja installation
-- [API key](https://help.seven.io/en/articles/9582186-where-do-i-find-my-api-key) from seven.io
-- PHP 8.1+ with Composer
-- Node.js and npm (for frontend assets)
+Add `Modules\\` to PSR-4 in InvoiceNinja's `composer.json`:
 
-### 2. Install Dependencies
-
-1. Autoloading: By default, module classes are not loaded automatically. You can autoload your modules using `psr-4`, add `"Modules\\": "Modules/"` in
-   **composer.json**.
-   ``` json
-   {
-     "autoload": {
-       "psr-4": {
-         "App\\": "app/",
-         "Modules\\": "Modules/"
-       }
-     }
-   }
-   ```
-2. Run `composer require seven.io/invoiceninja`
-
-3. Run `composer dump-autoload`
-
-### 3. Configure Environment
-
-Add your seven.io API key to your environment configuration:
-
-```bash
-# In your .env file
-SEVEN_API_KEY=your_seven_io_api_key_here
+```json
+{
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/",
+      "Modules\\": "Modules/"
+    }
+  }
+}
 ```
 
-### 4. Enable the Module
+### 2. Install the module
 
-The module will be automatically discovered by InvoiceNinja. You can configure it through the modules interface in your InvoiceNinja admin panel.
+```bash
+composer require seven.io/invoiceninja
+composer dump-autoload
+```
+
+### 3. Configure the API key
+
+```dotenv
+SEVEN_API_KEY=your-seven-api-key
+```
+
+The module is auto-discovered. Configure events and templates from the InvoiceNinja modules UI.
 
 ## Configuration
 
-### SMS Message Templates
+| Setting | Description |
+|---------|-------------|
+| `apiKey` | seven API key (defaults to `SEVEN_API_KEY` env) |
+| `sms.from` | Default sender ID |
+| `events.clientCreated.enabled` | Toggle client-creation SMS |
+| `events.clientCreated.text` | Template for the SMS body |
+| `events.vendorCreated.enabled` | Toggle vendor-creation SMS |
+| `events.vendorCreated.text` | Template for the SMS body |
 
-Messages support template variables that are automatically replaced with client data:
+### Template variables
+
+Any field on the client/vendor object can be referenced:
 
 ```
-Hello {{name}}, welcome to our service! Your email {{email}} has been registered.
+Hello {{name}}, welcome! Your email {{email}} is now registered.
 ```
-
-Available template variables include any field from the client object (name, email, phone, address, etc.).
-
-### Module Settings
-
-Configure the module through InvoiceNinja's interface:
-
-- **apiKey**: Your seven.io API key
-- **sms.from**: The sender ID for SMS messages
-- **events.clientCreated.enabled**: Toggle SMS notifications on/off
-- **events.clientCreated.text**: Customizable SMS message with variable support
-- **events.vendorCreated.enabled**: Toggle SMS notifications on/off
-- **events.vendorCreated.text**: Customizable SMS message with variable support
-
-## How It Works
-
-1. **Event Listening**: The module listens for InvoiceNinja's events `ClientWasCreated` and `VendorWasCreated`
-2. **Message Processing**: When triggered, it processes the SMS template with client data
-3. **API Communication**: Sends the SMS via seven.io's REST API
-4. **Error Handling**: Logs success/failure and handles API errors gracefully
 
 ## Development
 
-### Building Assets
-
-For development with hot reloading:
 ```bash
-npm run dev
+npm run dev    # Vite dev server with HMR
+npm run build  # Production assets to ../../public/build-seven/
 ```
 
-For production builds:
-```bash
-npm run build
-```
-
-### File Structure
-
-```
-app/
-    Http/Controllers/     # Web controllers (WIP)
-    Listeners/            # Event listeners for SMS sending
-    Providers/            # Laravel service providers
-config/seven.php          # Module configuration
-resources/                # Frontend assets and views
-routes/                   # Web and API routes
-module.json               # Module metadata and settings schema
-```
-
-## API Integration
-
-This module uses the official seven.io PHP SDK (`seven.io/api`) to communicate with seven.io's messaging service. All API calls are properly authenticated and include comprehensive error handling.
+The Vite output is intentionally placed outside the module so it doesn't collide with InvoiceNinja's main asset pipeline.
 
 ## Support
 
-For issues related to:
-- **Module functionality**: Create an issue in this repository
-- **seven.io API**: Contact seven.io support
-- **InvoiceNinja core**: Refer to InvoiceNinja documentation
+Need help? Feel free to [contact us](https://www.seven.io/en/company/contact/) or [open an issue](https://github.com/seven-io/InvoiceNinja/issues).
 
 ## License
 
-[![MIT](https://img.shields.io/badge/License-MIT-teal.svg)](LICENSE)
+[MIT](LICENSE)
